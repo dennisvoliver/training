@@ -1,0 +1,68 @@
+#include<stdio.h>
+
+void mysqueeze(char s[], char t[]);
+int getmyline (char s[], int last);
+int mystrcat(char s[], char t[], int n);
+
+/* program that plays with strings */
+int main()
+{
+	char s[100];
+	char t[100];
+	char u[99];
+	
+	/* fetch three strings */
+	getmyline(s, 99);
+	getmyline(t, 99);
+	getmyline(u, 99);
+
+	/* squeeze the first two, concatenate and output the three */
+	/*mysqueeze(s, t); */
+	mystrcat(s, u, mystrcat(s, t, 0));
+	printf("%s\n", s);
+
+}
+
+/* concatenates t[] to s[] */
+int mystrcat(char s[], char t[], int i)
+{
+	int j;
+	j = 0;
+	while('\0' != s[i])
+		i++;
+	while('\0' != (s[i++] = t[j++]))
+		 ;
+	return --i;
+	
+}
+/* delete all characters from s[] that is also in t[] */
+void mysqueeze(char s[], char t[])
+{
+
+	int i, j, k, skip;
+	for(i = j = skip = 0;'\0' != s[i]; i++){
+		for(k = 0; '\0' != t[k]; k++)
+			if(s[i] == t[k])
+				skip = 1;
+			
+		if(0 == skip)
+			s[j++] = s[i];
+		else
+			skip = 0;
+	}
+	s[j] = '\0';
+}
+
+/* get input from keyboard then dump result to s[] and return the number of characters including '\0' */
+int getmyline (char s[], int last)  
+{
+        int i, c;
+
+        for (i = 0; (c = getchar()) != EOF && i < (last - 1) && '\n' != c; ++i)
+                s[i] = c;   
+        if ('\n' == c) {    
+                s[i] = c;
+                ++i;        
+        }
+        s[i] = '\0';         
+        return i;

